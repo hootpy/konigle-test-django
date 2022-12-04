@@ -1,0 +1,18 @@
+{% extends "_base.html" %}
+
+{% block content %}
+    <div class="flex h-screen">
+        <div class="card w-96 bg-neutral text-neutral-content m-auto">
+            <div class="card-body items-center text-center">
+                <h2 class="card-title">Login</h2>
+                <p>Please enter the store name to see the data. (demo authentication)</p>
+                <div class="card-actions justify-end">
+                    <form action="{% url 'email' %}" method="post">
+                        <input type="text" placeholder="Store name" name="store_name" class="input w-full max-w-xs" />
+                        <button class="btn btn-accent mt-2" type="submit">Log in</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

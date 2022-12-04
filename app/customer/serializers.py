@@ -15,14 +15,11 @@ class SubscribeEmailSerializer(serializers.ModelSerializer):
             store=store,
             defaults={
                 "is_subscribed": True,
-                "subscribed_at": timezone.now(),
                 "store": store,
             },
         )
         if not created and not instance.is_subscribed:
             instance.is_subscribed = True
-            instance.subscribed_at = timezone.now()
-            instance.unsubscribe_at = None
             instance.save()
         return instance
 
@@ -36,6 +33,5 @@ class UnsubscribeEmailSerializer(serializers.ModelSerializer):
         instance = self.instance
         if instance.is_subscribed:
             instance.is_subscribed = False
-            instance.unsubscribe_at = timezone.now()
             instance.save()
         return instance

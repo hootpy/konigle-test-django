@@ -1,0 +1,51 @@
+{% extends "_base.html" %}
+
+{% block content %}
+    <div class="flex w-full">
+        <h1 class="text-3xl text-primary-content mt-4">Store: {{ store_name }}</h1>
+        <a class="mt-4 ml-auto self-end" href="{% url 'logout' %}"><h1 class="text-primary-content underline">Log out</h1></a>
+    </div>
+    <div class="divider"></div>
+    <h1 class="text-primary-content text-3xl"> {{ month }} {{ year }}</h1>
+    <div class="flex justify-around mt-4 ">
+        <div class="stats shadow">
+            <div class="stat bg-accent w-64">
+                <div class="stat-title text-accent-content">Email list</div>
+                <div class="stat-value text-primary">{{ email_list }}</div>
+            </div>
+        </div>
+        <div class="stats shadow">
+            <div class="stat bg-accent w-64">
+                <div class="stat-title text-accent-content">New this month</div>
+                <div class="stat-value text-primary">{{ new_this_month }}</div>
+            </div>
+        </div>
+        <div class="stats shadow">
+            <div class="stat bg-accent w-64">
+                <div class="stat-title text-accent-content">Unsubscribed</div>
+                <div class="stat-value text-primary">{{ unsubscribed }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="overflow-x-auto mt-5 border-primary-content border rounded-lg">
+        <table class="table w-full">
+            <!-- head -->
+            <thead>
+            <tr>
+                <th>EMAIL ID</th>
+                <th>Timestamp</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for email in emails %}
+            <tr>
+                <td>{{ email.email }}</td>
+                <td>{{ email.timestamp }}</td>
+                <td>{{ email.status }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

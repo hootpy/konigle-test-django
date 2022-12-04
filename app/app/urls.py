@@ -14,8 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from customer.urls import urlpatterns as customer_urls
+from customer.views import CustomerEmailView, LogoutView
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import include, path
 
 urlpatterns = [
     path("api/", include(customer_urls)),
-]
+    path("email/", CustomerEmailView.as_view(), name="email"),
+    path("logout/", LogoutView.as_view(), name="logout"),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
