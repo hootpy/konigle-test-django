@@ -1,7 +1,6 @@
+from customer.models import EmailSubscription
 from django.utils import timezone
 from rest_framework import serializers
-
-from customer.models import EmailSubscription
 
 
 class SubscribeEmailSerializer(serializers.ModelSerializer):
@@ -18,7 +17,7 @@ class SubscribeEmailSerializer(serializers.ModelSerializer):
                 "is_subscribed": True,
                 "subscribed_at": timezone.now(),
                 "store": store,
-            }
+            },
         )
         if not created and not instance.is_subscribed:
             instance.is_subscribed = True

@@ -10,7 +10,7 @@ services:
     build:
         context: ../
         dockerfile: docker/Dockerfile
-    container_name: konigle
+    container_name: konigle_backend
     platform: linux/amd64
     command: python manage.py runserver 0.0.0.0:8007
     volumes:
@@ -19,3 +19,30 @@ services:
       - "8007:8007"
     env_file:
       - ../.env
+  redis:
+    image: redis:6-alpine
+    container_name: konigle_redis
+    ports:
+      - "6379:6379"
+  celery:
+    build:
+        context: ../
+        dockerfile: docker/Dockerfile
+    container_name: konigle_celery
+    command: celery -A app worker -l info --concurrency=1 --loglevel=INFO
+    env_file:
+      - ../.env
+    depends_on:
+      - redis
+
+  celerybeat:
+    build:
+        context: ../
+        dockerfile: docker/Dockerfile
+    container_name: konigle_celerybeat
+    command: celery -A app beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    env_file:
+      - ../.env
+    depends_on:
+      - redis
+      - celery
