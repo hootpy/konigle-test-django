@@ -1,26 +1,27 @@
+from django.contrib.auth.models import User
 from django.db import models
+from rest_framework_api_key.models import AbstractAPIKey
 
-# Create your models here.
+
+class Store(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+class StoreAPIKey(AbstractAPIKey):
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="api_keys")
+
+
 class EmailSubscription(models.Model):
     email = models.EmailField(max_length=254, unique=True)
-    subscribed_at = models.DateTimeField(auto_now_add=True)
+    is_subscribed = models.BooleanField(default=True)
+    subscribed_at = models.DateTimeField(null=True, blank=True)
     unsubscribe_at = models.DateTimeField(null=True, blank=True)
+    store = models.ForeignKey(
+        Store,
+        on_delete=models.CASCADE,
+        related_name="email_subscriptions",
+        null=True,
+    )
 
-
-
-    is_subscribed = property(lambda self: self.unsubscribe_at is None)
-
-    def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
-    ):
-        if self.unsubscribe_at is not None:
-            self.email = f"{self.email.split('@')[0]}+{self.unsubscribe_at.timestamp()}@{self.email.split('@')[1]}"
-        super().save(force_insert, force_update, using, update_fields)
 
     def __str__(self):
         return self.email
-
-    class Meta:
-        verbose_name_plural = "Email Subscriptions"
-        verbose_name = "Email Subscription"
-        db_table = "email_subscription"

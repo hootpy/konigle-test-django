@@ -18,5 +18,3 @@ COPY --from=builder /usr/local/bin/ /usr/local/bin/
 WORKDIR /konigle
 COPY ./app ./app
 WORKDIR /konigle/app
-
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8007"]

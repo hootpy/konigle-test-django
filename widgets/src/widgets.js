@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 
 
 // TODO: Replace this endpoint with your REST API endpoint
-const LEAD_API = 'http://localhost:8000/leads';
+const LEAD_API = 'http://localhost:8007/api/subscribe/';
+const API_KEY = 'iwChxGmp.d3MllylyWtLC2bALiSNNQgUZHvhlOu5a';
 
 export const LeadWidget = function (props) {
 
@@ -24,7 +25,8 @@ export const LeadWidget = function (props) {
     fetch(LEAD_API, {
       method: 'post',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-Api-Key': API_KEY
       },
       body: JSON.stringify({
         email: email

@@ -12,6 +12,7 @@ services:
         dockerfile: docker/Dockerfile
     container_name: konigle
     platform: linux/amd64
+    command: python manage.py runserver 0.0.0.0:8007
     volumes:
       - "../app:/konigle/app"
     ports:

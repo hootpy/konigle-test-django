@@ -9,13 +9,34 @@ class SubscribeEmailSerializer(serializers.ModelSerializer):
         model = EmailSubscription
         fields = ("email",)
 
+    def save(self, **kwargs):
+        store = kwargs.pop("store")
+        instance, created = EmailSubscription.objects.get_or_create(
+            email=self.validated_data["email"],
+            store=store,
+            defaults={
+                "is_subscribed": True,
+                "subscribed_at": timezone.now(),
+                "store": store,
+            }
+        )
+        if not created and not instance.is_subscribed:
+            instance.is_subscribed = True
+            instance.subscribed_at = timezone.now()
+            instance.unsubscribe_at = None
+            instance.save()
+        return instance
+
+
 class UnsubscribeEmailSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmailSubscription
         fields = ("email",)
 
     def save(self, **kwargs):
-        instance = EmailSubscription.objects.get(email=self.validated_data["email"])
-        instance.unsubscribe_at = timezone.now()
-        instance.save()
+        instance = self.instance
+        if instance.is_subscribed:
+            instance.is_subscribed = False
+            instance.unsubscribe_at = timezone.now()
+            instance.save()
         return instance
