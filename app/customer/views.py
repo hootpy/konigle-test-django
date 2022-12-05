@@ -70,7 +70,7 @@ class CustomerEmailView(GenericAPIView):
             store=store,
             last_updated__month=self.current_month,
             last_updated__year=self.current_year,
-        )
+        ).order_by("-last_updated")
         context["email_list"] = email_list.count()
         context["new_this_month"] = email_list.filter(is_subscribed=True).count()
         context["unsubscribed"] = email_list.filter(is_subscribed=False).count()

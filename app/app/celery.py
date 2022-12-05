@@ -13,7 +13,7 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 app.conf.beat_schedule = {
     "log_new_subscription": {
         "task": "customer.tasks.log_new_subscription",
-        "schedule": crontab(day_of_week="mon,wed", hour=12, minute=12),
+        "schedule": crontab(day_of_week="mon,wed", hour=12, minute=00),
     },
 }
 
